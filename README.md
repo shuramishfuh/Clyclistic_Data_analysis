@@ -140,8 +140,144 @@ Data Cleaning Documentation
 	•	Purpose: Consistency in station information is essential for analyzing popular routes and stations accurately.
 	•	Assumptions: Each station ID should correspond to a unique station name, so any mismatch indicates a potential data entry issue.
 
-
 	•	A combined and cleaned dataset ready for analysis, with added columns for ride length and day of the week.
 	•	A description of data sources, including links and privacy considerations, ensuring transparency in the data preparation process.
+
+
+
+
+ 
+
+Section 4: Analyze
+
+Objective
+
+The primary objective of this analysis is to explore differences in bike usage patterns between casual riders and annual members. Key areas of focus include:
+	1.	Ride duration
+	2.	Ride frequency by day of the week
+	3.	Popular stations and routes
+
+Key Analysis Metrics
+
+We’ll calculate and analyze the following metrics:
+	1.	Average Ride Length: Compare average ride durations for casual riders and annual members.
+	2.	Ride Frequency by Day of the Week: Analyze patterns in usage based on the day of the week for each rider type.
+	3.	Most Popular Start and End Stations: Identify top stations where rides start and end, broken down by rider type.
+
+SQL Queries for Analysis
+
+1. Calculate Average Ride Length
+
+This query calculates the average ride length for both casual riders and annual members, allowing us to see if there’s a significant difference in duration.
+
+avg_ride_length <- dbGetQuery(conn, "
+SELECT member_casual,
+       AVG(ride_length) AS avg_ride_length
+FROM bike_trips
+GROUP BY member_casual;
+")
+
+print(avg_ride_length)
+
+2. Ride Frequency by Day of the Week
+
+This query returns the total number of rides for each day of the week, separated by rider type, to identify which days are most popular for casual riders vs. members.
+
+ride_frequency_by_day <- dbGetQuery(conn, "
+SELECT day_of_week,
+       member_casual,
+       COUNT(*) AS ride_count
+FROM bike_trips
+GROUP BY day_of_week, member_casual
+ORDER BY day_of_week, member_casual;
+")
+
+print(ride_frequency_by_day)
+
+3. Most Popular Start and End Stations
+
+This query identifies the top 5 start and end stations for both casual riders and annual members.
+
+# Most popular start stations
+popular_start_stations <- dbGetQuery(conn, "
+SELECT start_station_name,
+       member_casual,
+       COUNT(*) AS start_count
+FROM bike_trips
+GROUP BY start_station_name, member_casual
+ORDER BY start_count DESC
+LIMIT 5;
+")
+
+print("Top 5 Start Stations by Rider Type")
+print(popular_start_stations)
+
+# Most popular end stations
+popular_end_stations <- dbGetQuery(conn, "
+SELECT end_station_name,
+       member_casual,
+       COUNT(*) AS end_count
+FROM bike_trips
+GROUP BY end_station_name, member_casual
+ORDER BY end_count DESC
+LIMIT 5;
+")
+
+print("Top 5 End Stations by Rider Type")
+print(popular_end_stations)
+
+4. Ride Frequency by Hour of the Day
+
+This optional query examines when riders are most active throughout the day, which could be valuable for understanding peak usage times.
+
+ride_frequency_by_hour <- dbGetQuery(conn, "
+SELECT strftime('%H', started_at) AS hour,
+       member_casual,
+       COUNT(*) AS ride_count
+FROM bike_trips
+GROUP BY hour, member_casual
+ORDER BY hour;
+")
+
+print(ride_frequency_by_hour)
+
+Summarizing the Analysis
+
+Using the above queries, we can derive insights on:
+	•	Average Ride Length: Compare the average ride duration of casual riders and members. Typically, casual riders might have longer rides as they use the service more recreationally.
+	•	Ride Frequency by Day: Identify if casual riders are more active on weekends, while annual members might have a more consistent weekday usage pattern.
+	•	Popular Stations: Highlight top start and end stations for each group, which could guide marketing efforts at those locations.
+	•	Ride Frequency by Hour: Understand peak times of use by hour, helping with resource allocation and scheduling.
+
+Visualizations in R
+
+Once the data is retrieved, you can create visualizations to support these findings. Here are examples of visualizations you might create using ggplot2:
+
+# Load ggplot2 for visualization
+library(ggplot2)
+
+# Average Ride Length Plot
+ggplot(avg_ride_length, aes(x = member_casual, y = avg_ride_length, fill = member_casual)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Average Ride Length by Rider Type", x = "Rider Type", y = "Average Ride Length (minutes)")
+
+# Ride Frequency by Day Plot
+ggplot(ride_frequency_by_day, aes(x = day_of_week, y = ride_count, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Ride Frequency by Day of the Week", x = "Day of the Week", y = "Ride Count")
+
+# Most Popular Start Stations Plot
+ggplot(popular_start_stations, aes(x = reorder(start_station_name, -start_count), y = start_count, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  coord_flip() +
+  labs(title = "Top 5 Start Stations by Rider Type", x = "Start Station", y = "Ride Count")
+
+Interpretation of Results
+
+After running the analysis and visualizing the data, summarize findings in a way that highlights actionable insights:
+	•	Casual riders:
+	•	Annual members : 
+	•	Popular stations :
+
 
 
