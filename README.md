@@ -89,6 +89,58 @@ To prepare the data for analysis, we will undertake the following steps:
 Output for the Prepare Phase
 
 The output for this phase will be:
+
+#  Section 3: Process
+
+Data Cleaning Documentation
+	1.	Check for Missing Values
+	•	Steps:
+	•	Identify missing values in key columns, particularly ride_id, started_at, ended_at, and member_casual.
+	•	Remove any rows where these essential columns contain missing data, as they are crucial for analysis.
+	•	Purpose: Ensures that every record is complete with the necessary fields for calculating ride duration and identifying member types.
+	•	Assumptions: Missing values in critical fields cannot be accurately filled or imputed, so they are removed to maintain data integrity.
+	2.	Convert Date and Time Columns
+	•	Steps:
+	•	Convert started_at and ended_at columns to a consistent datetime format (YYYY-MM-DD HH:MM:SS).
+	•	Purpose: Consistent datetime formatting allows accurate time calculations, like ride duration and day of the week.
+	•	Assumptions: All dates and times are accurate in their original entries, and the conversion does not alter the intended data.
+	3.	Calculate Ride Length
+	•	Steps:
+	•	Create a new column, ride_length, by subtracting started_at from ended_at.
+	•	Filter out any records where ride_length is zero or negative, as these are likely data entry errors or test rides.
+	•	Purpose: Ride length is a key variable for analyzing usage patterns, so it needs to be accurate. Removing negative and zero values ensures meaningful analysis.
+	•	Assumptions: Negative or zero ride lengths are errors and do not represent valid rides.
+	4.	Extract Day of the Week
+	•	Steps:
+	•	Create a day_of_week column derived from the started_at date, showing which day the ride began.
+	•	Purpose: Enables analysis of riding patterns by day of the week (e.g., differences between weekday and weekend usage).
+	•	Assumptions: The started_at column correctly represents the beginning of each ride.
+	5.	Remove Duplicates
+	•	Steps:
+	•	Check for duplicate entries in the ride_id column.
+	•	Remove any duplicates found, as each ride_id should be unique.
+	•	Purpose: Ensures that each ride is counted only once in the analysis, preventing skewed results due to repeated entries.
+	•	Assumptions: Duplicate ride_id entries are errors or duplications from data collection.
+	6.	Standardize Categorical Variables
+	•	Steps:
+	•	In the member_casual column, standardize entries to lowercase to avoid discrepancies (e.g., Member vs. member).
+	•	Ensure that all entries in member_casual match either “member” or “casual.”
+	•	Verify consistency in rideable_type values to ensure valid bike types.
+	•	Purpose: Standardizing these fields prevents mismatches and enables reliable aggregation and filtering of data.
+	•	Assumptions: Any entries that do not match expected values (like “member” or “casual”) are errors and should be corrected or removed.
+	7.	Validate and Filter Ride Lengths
+	•	Steps:
+	•	Review the distribution of ride_length values, filtering out any outliers that are implausibly long or short (e.g., rides over 24 hours).
+	•	Purpose: Removing extreme outliers ensures that the analysis focuses on realistic, typical usage patterns.
+	•	Assumptions: Extremely long or short ride durations are likely data errors rather than legitimate trips.
+	8.	Cross-Reference Station Names and IDs
+	•	Steps:
+	•	Check for consistency between start_station_name and start_station_id (and similarly for end_station_name and end_station_id).
+	•	Resolve any mismatches, if possible, or mark them for further review.
+	•	Purpose: Consistency in station information is essential for analyzing popular routes and stations accurately.
+	•	Assumptions: Each station ID should correspond to a unique station name, so any mismatch indicates a potential data entry issue.
+
+
 	•	A combined and cleaned dataset ready for analysis, with added columns for ride length and day of the week.
 	•	A description of data sources, including links and privacy considerations, ensuring transparency in the data preparation process.
 
