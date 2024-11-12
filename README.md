@@ -39,3 +39,57 @@
  The outcomes for this phase are:
  	•	A clear statement of the business task, which includes the primary question guiding the analysis and the intended goals of the marketing team.
  	•	An understanding of stakeholder needs and how the findings will support strategic decision-making.
+
+
+  
+# Section 2: Prepare
+
+Data Source
+
+To analyze the usage patterns of casual riders and annual members, we will use Cyclistic’s historical bike trip data. This dataset includes information about all bike trips taken with Cyclistic bikes over the past 12 months. This data is provided by Motivate International Inc., made publicly available under a license agreement that ensures it can be used for analysis purposes without infringing on data privacy or licensing terms.
+
+The dataset can be accessed through this link: Divvy Trip Data.
+
+Data Organization and Structure
+
+The Cyclistic data is stored in multiple files corresponding to each month of bike trips. Each file contains data on individual rides, including attributes such as:
+	•	Trip start and end times
+	•	Station locations (start and end points)
+	•	Type of user (casual rider or annual member)
+	•	Ride ID and bike ID
+
+These files are in CSV format, allowing for flexible use in spreadsheet applications, SQL databases, and R programming environments.
+
+Data Privacy and Security Considerations
+
+Cyclistic prioritizes the privacy and security of its users. To comply with data privacy requirements:
+	•	Personally identifiable information (PII) has been excluded from the dataset. This ensures that user privacy is maintained, as there is no link between individual trips and personal information, such as credit card numbers or addresses.
+	•	The data provided strictly includes non-identifiable trip details, which allows for behavior analysis without compromising individual privacy.
+
+Data Credibility and Quality Assessment
+
+To ensure that the analysis will be accurate and reliable, the dataset must meet the following credibility standards, encapsulated in the ROCCC framework:
+	•	Reliable: The data is provided by Motivate International Inc., a reputable source known for maintaining data quality in bike-sharing systems.
+	•	Original: The data comes directly from Cyclistic’s bike-share program, making it firsthand and relevant to the analysis.
+	•	Comprehensive: The data spans a full year, offering a comprehensive view of usage patterns across different seasons.
+	•	Current: The dataset includes the most recent 12 months, ensuring that the analysis reflects up-to-date rider behavior.
+	•	Consistent: The monthly datasets are formatted similarly, facilitating easy consolidation and analysis.
+
+Data Preparation Steps
+
+To prepare the data for analysis, we will undertake the following steps:
+	1.	Download and Organize Files: Download each of the 12 monthly CSV files and store them in a dedicated folder for organization.
+	2.	Verify File Integrity: Open each file to check for any corrupted data, missing values, or format inconsistencies.
+	3.	Combine and Standardize: Merge the monthly files into a single dataset, ensuring consistency across columns (e.g., aligning column headers for each file).
+	4.	Create New Columns:
+	•	Ride Length: Calculate the duration of each trip by subtracting the start time from the end time.
+	•	Day of Week: Extract the day of the week for each ride to analyze patterns by day (e.g., weekday vs. weekend behavior).
+	5.	Data Cleaning: Check for and handle any anomalies, such as negative ride lengths, missing station data, or duplicate entries.
+
+Output for the Prepare Phase
+
+The output for this phase will be:
+	•	A combined and cleaned dataset ready for analysis, with added columns for ride length and day of the week.
+	•	A description of data sources, including links and privacy considerations, ensuring transparency in the data preparation process.
+
+
